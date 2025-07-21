@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-  <strong>This is a repository for reinforcement learning implementation based on Unitree robots, supporting Unitree Go2, H1, H1_2, and G1.</strong> 
+  <strong>이 저장소는 Unitree 로봇을 기반으로 한 강화 학습 구현을 위한 것으로, Unitree Go2, H1, H1_2, G1을 지원합니다.</strong> 
 </p>
 
 <div align="center">
@@ -19,70 +19,70 @@
 
 ---
 
-## 📦 Installation and Configuration
+## 📦 설치 및 설정
 
-Please refer to [setup.md](/doc/setup_en.md) for installation and configuration steps.
+설치 및 설정 단계는 [setup.md](/doc/setup_en.md)를 참조하십시오.
 
-## 🔁 Process Overview
+## 🔁 프로세스 개요
 
-The basic workflow for using reinforcement learning to achieve motion control is:
+강화 학습을 사용하여 모션 제어를 달성하기 위한 기본 워크플로우는 다음과 같습니다:
 
 `Train` → `Play` → `Sim2Sim` → `Sim2Real`
 
-- **Train**: Use the Gym simulation environment to let the robot interact with the environment and find a policy that maximizes the designed rewards. Real-time visualization during training is not recommended to avoid reduced efficiency.
-- **Play**: Use the Play command to verify the trained policy and ensure it meets expectations.
-- **Sim2Sim**: Deploy the Gym-trained policy to other simulators to ensure it’s not overly specific to Gym characteristics.
-- **Sim2Real**: Deploy the policy to a physical robot to achieve motion control.
+- **Train**: Gym 시뮬레이션 환경을 사용하여 로봇이 환경과 상호작용하고 설계된 보상을 최대화하는 정책을 찾도록 합니다. 훈련 중 실시간 시각화는 효율 감소를 방지하기 위해 권장되지 않습니다.
+- **Play**: 훈련된 정책을 검증하고 기대에 부합하는지 확인합니다.
+- **Sim2Sim**: Gym에서 훈련된 정책을 다른 시뮬레이터에 배포하여 Gym 특성에 과도하게 의존하지 않도록 합니다.
+- **Sim2Real**: 정책을 실제 로봇에 배포하여 모션 제어를 달성합니다.
 
-## 🛠️ User Guide
+## 🛠️ 사용자 가이드
 
-### 1. Training
+### 1. 훈련
 
-Run the following command to start training:
+다음 명령을 실행하여 훈련을 시작하십시오:
 
 ```bash
 python legged_gym/scripts/train.py --task=xxx
 ```
 
-#### ⚙️ Parameter Description
-- `--task`: Required parameter; values can be (go2, g1, h1, h1_2).
-- `--headless`: Defaults to starting with a graphical interface; set to true for headless mode (higher efficiency).
-- `--resume`: Resume training from a checkpoint in the logs.
-- `--experiment_name`: Name of the experiment to run/load.
-- `--run_name`: Name of the run to execute/load.
-- `--load_run`: Name of the run to load; defaults to the latest run.
-- `--checkpoint`: Checkpoint number to load; defaults to the latest file.
-- `--num_envs`: Number of environments for parallel training.
-- `--seed`: Random seed.
-- `--max_iterations`: Maximum number of training iterations.
-- `--sim_device`: Simulation computation device; specify CPU as `--sim_device=cpu`.
-- `--rl_device`: Reinforcement learning computation device; specify CPU as `--rl_device=cpu`.
+#### ⚙️ 매개변수 설명
+- `--task`: 필수 매개변수; 값은 (go2, g1, h1, h1_2)일 수 있습니다.
+- `--headless`: 기본적으로 그래픽 인터페이스로 시작; 헤드리스 모드(효율성 향상)를 위해 true로 설정하십시오.
+- `--resume`: 로그에서 체크포인트를 사용하여 훈련을 재개합니다.
+- `--experiment_name`: 실행/로드할 실험 이름.
+- `--run_name`: 실행/로드할 실행 이름.
+- `--load_run`: 로드할 실행 이름; 기본값은 최신 실행입니다.
+- `--checkpoint`: 로드할 체크포인트 번호; 기본값은 최신 파일입니다.
+- `--num_envs`: 병렬 훈련을 위한 환경 수.
+- `--seed`: 랜덤 시드.
+- `--max_iterations`: 최대 훈련 반복 횟수.
+- `--sim_device`: 시뮬레이션 계산 장치; CPU를 지정하려면 `--sim_device=cpu`를 사용하십시오.
+- `--rl_device`: 강화 학습 계산 장치; CPU를 지정하려면 `--rl_device=cpu`를 사용하십시오.
 
-**Default Training Result Directory**: `logs/<experiment_name>/<date_time>_<run_name>/model_<iteration>.pt`
+**기본 훈련 결과 디렉토리**: `logs/<experiment_name>/<date_time>_<run_name>/model_<iteration>.pt`
 
 ---
 
-### 2. Play
+### 2. 플레이
 
-To visualize the training results in Gym, run the following command:
+Gym에서 훈련 결과를 시각화하려면 다음 명령을 실행하십시오:
 
 ```bash
 python legged_gym/scripts/play.py --task=xxx
 ```
 
-**Description**:
+**설명**:
 
-- Play’s parameters are the same as Train’s.
-- By default, it loads the latest model from the experiment folder’s last run.
-- You can specify other models using `load_run` and `checkpoint`.
+- Play의 매개변수는 Train과 동일합니다.
+- 기본적으로 실험 폴더의 마지막 실행에서 최신 모델을 로드합니다.
+- `load_run` 및 `checkpoint`를 사용하여 다른 모델을 지정할 수 있습니다.
 
-#### 💾 Export Network
+#### 💾 네트워크 내보내기
 
-Play exports the Actor network, saving it in `logs/{experiment_name}/exported/policies`:
-- Standard networks (MLP) are exported as `policy_1.pt`.
-- RNN networks are exported as `policy_lstm_1.pt`.
+Play는 Actor 네트워크를 내보내며, 이를 `logs/{experiment_name}/exported/policies`에 저장합니다:
+- 표준 네트워크(MLP)는 `policy_1.pt`로 내보냅니다.
+- RNN 네트워크는 `policy_lstm_1.pt`로 내보냅니다.
 
-### Play Results
+### 플레이 결과
 
 | Go2 | G1 | H1 | H1_2 |
 |--- | --- | --- | --- |
@@ -92,26 +92,26 @@ Play exports the Actor network, saving it in `logs/{experiment_name}/exported/po
 
 ### 3. Sim2Sim (Mujoco)
 
-Run Sim2Sim in the Mujoco simulator:
+Mujoco 시뮬레이터에서 Sim2Sim을 실행하십시오:
 
 ```bash
 python deploy/deploy_mujoco/deploy_mujoco.py {config_name}
 ```
 
-#### Parameter Description
-- `config_name`: Configuration file; default search path is `deploy/deploy_mujoco/configs/`.
+#### 매개변수 설명
+- `config_name`: 구성 파일; 기본 검색 경로는 `deploy/deploy_mujoco/configs/`입니다.
 
-#### Example: Running G1
+#### 예: G1 실행
 
 ```bash
 python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
 
-#### ➡️ Replace Network Model
+#### ➡️ 네트워크 모델 교체
 
-The default model is located at `deploy/pre_train/{robot}/motion.pt`; custom-trained models are saved in `logs/g1/exported/policies/policy_lstm_1.pt`. Update the `policy_path` in the YAML configuration file accordingly.
+기본 모델은 `deploy/pre_train/{robot}/motion.pt`에 위치하며, 사용자 정의 훈련 모델은 `logs/g1/exported/policies/policy_lstm_1.pt`에 저장됩니다. YAML 구성 파일에서 `policy_path`를 업데이트하십시오.
 
-#### Simulation Results
+#### 시뮬레이션 결과
 
 | G1 | H1 | H1_2 |
 |--- | --- | --- |
@@ -120,43 +120,43 @@ The default model is located at `deploy/pre_train/{robot}/motion.pt`; custom-tra
 
 ---
 
-### 4. Sim2Real (Physical Deployment)
+### 4. Sim2Real (물리적 배포)
 
-Before deploying to the physical robot, ensure it’s in debug mode. Detailed steps can be found in the [Physical Deployment Guide](deploy/deploy_real/README.md):
+물리적 로봇에 배포하기 전에 디버그 모드인지 확인하십시오. 자세한 단계는 [물리적 배포 가이드](deploy/deploy_real/README.md)를 참조하십시오:
 
 ```bash
 python deploy/deploy_real/deploy_real.py {net_interface} {config_name}
 ```
 
-#### Parameter Description
-- `net_interface`: Network card name connected to the robot, e.g., `enp3s0`.
-- `config_name`: Configuration file located in `deploy/deploy_real/configs/`, e.g., `g1.yaml`, `h1.yaml`, `h1_2.yaml`.
+#### 매개변수 설명
+- `net_interface`: 로봇에 연결된 네트워크 카드 이름, 예: `enp3s0`.
+- `config_name`: `deploy/deploy_real/configs/`에 위치한 구성 파일, 예: `g1.yaml`, `h1.yaml`, `h1_2.yaml`.
 
-#### Deployment Results
+#### 배포 결과
 
 | G1 | H1 | H1_2 |
 |--- | --- | --- |
-| [![real_g1](https://oss-global-cdn.unitree.com/static/78c61459d3ab41448cfdb31f6a537e8b.GIF)](https://oss-global-cdn.unitree.com/static/0818dcf7a6874b92997354d628adcacd.mp4) | [![real_h1](https://oss-global-cdn.unitree.com/static/fa07b2fd2ad64bb08e6b624d39336245.GIF)](https://oss-global-cdn.unitree.com/static/ea0084038d384e3eaa73b961f33e6210.mp4) | [![real_h1_2](https://oss-global-cdn.unitree.com/static/a88915e3523546128a79520aa3e20979.GIF)](https://oss-global-cdn.unitree.com/static/12d041a7906e489fae79d55b091a63dd.mp4) |
+| [![real_g1](https://oss-global-cdn.unitree.com/static/78c61459d3ab4a51906aff1f93428650.GIF)](https://oss-global-cdn.unitree.com/static/0818dcf7a6874b92997354d628adcacd.mp4) | [![real_h1](https://oss-global-cdn.unitree.com/static/fa07b2fd2ad64bb08e6b624d39336245.GIF)](https://oss-global-cdn.unitree.com/static/ea0084038d384e3eaa73b961f33e6210.mp4) | [![real_h1_2](https://oss-global-cdn.unitree.com/static/a88915e3523546128a79520aa3e20979.GIF)](https://oss-global-cdn.unitree.com/static/12d041a7906e489fae79d55b091a63dd.mp4) |
 
 ---
 
-## 🎉 Acknowledgments
+## 🎉 감사의 말
 
-This repository is built upon the support and contributions of the following open-source projects. Special thanks to:
+이 저장소는 다음 오픈 소스 프로젝트의 지원과 기여를 바탕으로 구축되었습니다. 특별히 감사드립니다:
 
-- [legged\_gym](https://github.com/leggedrobotics/legged_gym): The foundation for training and running codes.
-- [rsl\_rl](https://github.com/leggedrobotics/rsl_rl.git): Reinforcement learning algorithm implementation.
-- [mujoco](https://github.com/google-deepmind/mujoco.git): Providing powerful simulation functionalities.
-- [unitree\_sdk2\_python](https://github.com/unitreerobotics/unitree_sdk2_python.git): Hardware communication interface for physical deployment.
+- [legged\_gym](https://github.com/leggedrobotics/legged_gym): 훈련 및 실행 코드의 기반.
+- [rsl\_rl](https://github.com/leggedrobotics/rsl_rl.git): 강화 학습 알고리즘 구현.
+- [mujoco](https://github.com/google-deepmind/mujoco.git): 강력한 시뮬레이션 기능 제공.
+- [unitree\_sdk2\_python](https://github.com/unitreerobotics/unitree_sdk2_python.git): 물리적 배포를 위한 하드웨어 통신 인터페이스.
 
 ---
 
-## 🔖 License
+## 🔖 라이센스
 
-This project is licensed under the [BSD 3-Clause License](./LICENSE):
-1. The original copyright notice must be retained.
-2. The project name or organization name may not be used for promotion.
-3. Any modifications must be disclosed.
+이 프로젝트는 [BSD 3-Clause License](./LICENSE)에 따라 라이센스가 부여됩니다:
+1. 원래 저작권 고지를 유지해야 합니다.
+2. 프로젝트 이름 또는 조직 이름은 홍보에 사용될 수 없습니다.
+3. 모든 수정 사항은 공개되어야 합니다.
 
-For details, please read the full [LICENSE file](./LICENSE).
+자세한 내용은 전체 [LICENSE 파일](./LICENSE)을 읽어보십시오.
 
